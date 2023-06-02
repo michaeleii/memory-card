@@ -80,16 +80,19 @@ function App() {
       return;
     }
     const isMatch = choiceOne?.img === choiceTwo?.img;
-    isMatch
-      ? setCards(
-          cards.map((card) => {
-            return card.img === choiceOne?.img
-              ? { ...card, matched: true }
-              : card;
-          })
-        )
-      : console.log("no match");
-    resetTurn();
+    if (isMatch) {
+      setCards(
+        cards.map((card) => {
+          return card.img === choiceOne?.img
+            ? { ...card, matched: true }
+            : card;
+        })
+      );
+    }
+
+    setTimeout(() => {
+      resetTurn();
+    }, 1000);
   };
 
   const resetTurn = () => {
@@ -113,9 +116,13 @@ function App() {
         New Game
       </button>
       <div className="mx-auto mt-10 grid max-w-3xl  grid-cols-2 gap-5 md:grid-cols-3">
-        {cards.map((card) => (
-          <Card key={card.id} {...card} />
-        ))}
+        {cards.map((card) => {
+          const props = {
+            card,
+            flipped: card === choiceOne || card === choiceTwo || card.matched,
+          };
+          return <Card key={card.id} {...props} />;
+        })}
       </div>
       <div className="mt-10">
         <p className="text-2xl font-bold">Turns: {turns}</p>
