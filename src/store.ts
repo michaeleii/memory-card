@@ -15,6 +15,8 @@ interface GameState {
   setChoiceOne: (choiceOne: GameState["choiceOne"]) => void;
   choiceTwo: Card | null;
   setChoiceTwo: (choiceTwo: GameState["choiceTwo"]) => void;
+  disabled: boolean;
+  setDisabled: (disabled: GameState["disabled"]) => void;
 }
 
 const useStore = create<GameState>((set) => ({
@@ -26,6 +28,8 @@ const useStore = create<GameState>((set) => ({
   setChoiceOne: (choiceOne) => set({ choiceOne }),
   choiceTwo: null,
   setChoiceTwo: (choiceTwo) => set({ choiceTwo }),
+  disabled: false,
+  setDisabled: (disabled) => set({ disabled }),
 }));
 
 export default useStore;

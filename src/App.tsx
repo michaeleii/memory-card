@@ -51,6 +51,7 @@ function App() {
     setChoiceOne,
     choiceTwo,
     setChoiceTwo,
+    setDisabled,
   ] = useStore((state) => [
     state.cards,
     state.setCards,
@@ -60,6 +61,7 @@ function App() {
     state.setChoiceOne,
     state.choiceTwo,
     state.setChoiceTwo,
+    state.setDisabled,
   ]);
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -79,6 +81,7 @@ function App() {
     if (!(choiceOne && choiceTwo)) {
       return;
     }
+    setDisabled(true);
     const isMatch = choiceOne?.img === choiceTwo?.img;
     if (isMatch) {
       setCards(
@@ -99,6 +102,7 @@ function App() {
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns(turns + 1);
+    setTimeout(() => setDisabled(false), 40);
   };
 
   useEffect(() => {
@@ -106,16 +110,19 @@ function App() {
     console.log(cards);
   }, [choiceTwo]);
 
+  useEffect(() => {
+    shuffleCards();
+  }, []);
+
   return (
     <div className="p-10 text-center">
-      <h1 className="mb-10 text-5xl font-bold">Memory Game</h1>
       <button
         className="rounded-lg border-2 border-white p-2 transition-colors hover:bg-pink-500"
         onClick={shuffleCards}
       >
         New Game
       </button>
-      <div className="mx-auto mt-10 grid max-w-3xl  grid-cols-2 gap-5 md:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-3xl  grid-cols-3 gap-5 md:grid-cols-4">
         {cards.map((card) => {
           const props = {
             card,
@@ -125,7 +132,7 @@ function App() {
         })}
       </div>
       <div className="mt-10">
-        <p className="text-2xl font-bold">Turns: {turns}</p>
+        <p className="text-2xl">Turns: {turns}</p>
       </div>
     </div>
   );
