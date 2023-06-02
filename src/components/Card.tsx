@@ -2,17 +2,22 @@ import useStore, { Card } from "../store";
 import coverImg from "../assets/cover.png";
 
 function Card(card: Card) {
-  const [choiceOne, setChoiceOne, setChoiceTwo] = useStore((state) => [
-    state.choiceOne,
-    state.setChoiceOne,
-    state.setChoiceTwo,
-  ]);
+  const [choiceOne, setChoiceOne, choiceTwo, setChoiceTwo] = useStore(
+    (state) => [
+      state.choiceOne,
+      state.setChoiceOne,
+      state.choiceTwo,
+      state.setChoiceTwo,
+    ]
+  );
   const handleClick = () => {
     choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
+
+  const flipped = card === choiceOne || card === choiceTwo || card.matched;
   return (
     <div className="relative">
-      <div>
+      <div className={flipped ? "flipped" : "relative"}>
         <img
           src={card.img}
           alt={card.name}

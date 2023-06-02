@@ -4,6 +4,7 @@ export interface Card {
   id: `${string}-${string}-${string}-${string}-${string}`;
   name: string;
   img: string;
+  matched: boolean;
 }
 interface GameState {
   cards: Card[];

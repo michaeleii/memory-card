@@ -6,40 +6,60 @@ import keroppiImg from "./assets/keroppi.png";
 import pompompurinImg from "./assets/pompompurin.png";
 import useStore from "./store";
 import Card from "./components/Card";
+import { useEffect } from "react";
 
 const cardImages = [
   {
     name: "hellokitty",
     img: hellokittyImg,
+    matched: false,
   },
   {
     name: "cinnamonroll",
     img: cinnamonrollImg,
+    matched: false,
   },
   {
     name: "melody",
     img: melodyImg,
+    matched: false,
   },
   {
     name: "kuromi",
     img: kuromiImg,
+    matched: false,
   },
   {
     name: "keroppi",
     img: keroppiImg,
+    matched: false,
   },
   {
     name: "pompompurin",
     img: pompompurinImg,
+    matched: false,
   },
 ];
 
 function App() {
-  const [cards, setCards, turns, setTurns] = useStore((state) => [
+  const [
+    cards,
+    setCards,
+    turns,
+    setTurns,
+    choiceOne,
+    setChoiceOne,
+    choiceTwo,
+    setChoiceTwo,
+  ] = useStore((state) => [
     state.cards,
     state.setCards,
     state.turns,
     state.setTurns,
+    state.choiceOne,
+    state.setChoiceOne,
+    state.choiceTwo,
+    state.setChoiceTwo,
   ]);
   const shuffleCards = () => {
     const shuffledCards = [...cardImages, ...cardImages]
@@ -50,11 +70,39 @@ function App() {
       }));
     setCards(shuffledCards);
     setTurns(0);
-    console.log({
-      shuffledCards,
-      turns,
-    });
   };
+  console.log({
+    cards,
+    turns,
+  });
+  const checkMatch = () => {
+    if (!(choiceOne && choiceTwo)) {
+      return;
+    }
+    const isMatch = choiceOne?.img === choiceTwo?.img;
+    isMatch
+      ? setCards(
+          cards.map((card) => {
+            return card.img === choiceOne?.img
+              ? { ...card, matched: true }
+              : card;
+          })
+        )
+      : console.log("no match");
+    resetTurn();
+  };
+
+  const resetTurn = () => {
+    setChoiceOne(null);
+    setChoiceTwo(null);
+    setTurns(turns + 1);
+  };
+
+  useEffect(() => {
+    checkMatch();
+    console.log(cards);
+  }, [choiceTwo]);
+
   return (
     <div className="p-10 text-center">
       <h1 className="mb-10 text-5xl font-bold">Memory Game</h1>
@@ -68,6 +116,9 @@ function App() {
         {cards.map((card) => (
           <Card key={card.id} {...card} />
         ))}
+      </div>
+      <div className="mt-10">
+        <p className="text-2xl font-bold">Turns: {turns}</p>
       </div>
     </div>
   );
