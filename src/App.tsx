@@ -122,7 +122,7 @@ function App() {
       >
         New Game
       </button>
-      <div className="mx-auto mt-10 grid max-w-3xl  grid-cols-3 gap-5 md:grid-cols-4">
+      <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4">
         {cards.map((card) => {
           const props = {
             card,
